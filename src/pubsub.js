@@ -29,7 +29,7 @@
       });
     } else {
       _.each(input, function(v, k) {
-        output[k] = [v, false, false];
+        output[k] = [v, false];
       });
     }
     return output;
@@ -125,16 +125,16 @@
     return token.id;
   }
 
-  function trigger(topicObject, callbackData) {
+  function trigger(input, callbackData) {
     var tokenIds = {};
-    topicObject = parseTopic(topicObject);
+    var topicObject = parseTopic(input);
     _.each(this.conditions, function(condition, index) {
       if (condition.qualifies(topicObject)) {
         tokenIds[condition.token] = true;
       }
     }, this);
     _.each(tokenIds, function(flag, tokenId) {
-      this.tokens[tokenId].callback.call(null, callbackData);
+      this.tokens[tokenId].callback(callbackData);
     }, this);
     return _.keys(tokenIds);
   }
